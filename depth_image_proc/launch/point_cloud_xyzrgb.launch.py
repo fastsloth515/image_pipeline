@@ -43,10 +43,18 @@ def generate_launch_description():
     default_rviz = os.path.join(get_package_share_directory('depth_image_proc'),
                                 'launch', 'rviz/point_cloud_xyzrgb.rviz')
     return LaunchDescription([
-        # install realsense from https://github.com/intel/ros2_intel_realsense
-        launch_ros.actions.Node(
-            package='realsense_ros2_camera', node_executable='realsense_ros2_camera',
-            output='screen'),
+        # realsense2_camera 실행 + 파라미터 강제 설정
+        # launch_ros.actions.Node(
+        #     package='realsense2_camera',
+        #     executable='realsense2_camera_node',
+        #     name='camera',
+        #     output='screen',
+        #     parameters=[{
+        #         'rgb_camera.color_profile': '640,480,15',
+        #         'depth_module.depth_profile': '640,480,15',
+        #         'align_depth.enable': True,
+        #     }]
+        # ),
 
         # launch plugin through rclcpp_components container
         launch_ros.actions.ComposableNodeContainer(
@@ -60,10 +68,9 @@ def generate_launch_description():
                     package='depth_image_proc',
                     plugin='depth_image_proc::PointCloudXyzrgbNode',
                     name='point_cloud_xyzrgb_node',
-                    remappings=[('rgb/camera_info', '/camera/color/camera_info'),
-                                ('rgb/image_rect_color', '/camera/color/image_raw'),
-                                ('depth_registered/image_rect',
-                                 '/camera/aligned_depth_to_color/image_raw'),
+                    remappings=[('rgb/camera_info', '/camera/camera/color/camera_info'),
+                                ('rgb/image_rect_color', '/hugging/output/image'),
+                                ('depth_registered/image_rect', '/camera/camera/aligned_depth_to_color/image_raw'),
                                 ('points', '/camera/depth_registered/points')]
                 ),
             ],
@@ -72,6 +79,6 @@ def generate_launch_description():
 
         # rviz
         launch_ros.actions.Node(
-            package='rviz2', node_executable='rviz2', output='screen',
+            package='rviz2', executable='rviz2', output='screen',
             arguments=['--display-config', default_rviz]),
     ])

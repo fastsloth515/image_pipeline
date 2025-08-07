@@ -60,9 +60,9 @@ def generate_launch_description():
                     package='depth_image_proc',
                     plugin='depth_image_proc::PointCloudXyzNode',
                     name='point_cloud_xyz_node',
-                    remappings=[('image_rect', '/camera/depth/image_rect_raw'),
-                                ('camera_info', '/camera/depth/camera_info'),
-                                ('image', '/camera/depth/converted_image')]
+                    remappings=[('image_rect', '/camera/camera/depth/image_rect_raw'),
+                                ('camera_info', '/camera/camera/depth/camera_info'),
+                                ('image', '/hugging/output/image')]
                 ),
             ],
             output='screen',
