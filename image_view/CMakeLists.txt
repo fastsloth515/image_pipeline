@@ -14,6 +14,8 @@ ament_auto_find_build_dependencies()
 
 find_package(Boost REQUIRED)
 find_package(OpenCV REQUIRED)
+find_package(camera_calibration_parsers REQUIRED)
+
 
 # Deal with the GUI's
 if(ANDROID)
